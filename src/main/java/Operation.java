@@ -3,14 +3,6 @@ import java.util.ArrayList;
 public class Operation {
 
 
-    //todo:
-    // 1.pole                                       ZROBIONE
-/*      2.obwód                                     ZROBIONE
-        3.przesunięcie wielokąta o wektor           ZROBIONE
-        4.obrót wielokąta
-        5.skalowanie wielokąta*/
-
-
     /**
      * Oblicza powierzchnie wieloboku, przyjmując za parametr listę wspólrzdnych wierzchołków
      *
@@ -42,7 +34,6 @@ public class Operation {
 
         for (int i = 0; i < max; i++) {
             circuit = circuit + getDistanceBetween(vertices.get(i), vertices.get(i + 1));
-            System.out.println(circuit);
         }
         circuit = circuit + getDistanceBetween(vertices.get(max), vertices.get(0));
         return circuit;
@@ -66,40 +57,65 @@ public class Operation {
 
     /**
      * Pzesuwa zbiór wierzchołków o wektor o początku w 0,0 i zadanym końcu.
+     *
      * @param vertices
      * @param vector
      * @return
      */
-    public ArrayList<ComplexNum> moveByVector(ArrayList<ComplexNum> vertices, ComplexNum vector){
+    public ArrayList<ComplexNum> moveByVector(ArrayList<ComplexNum> vertices, ComplexNum vector) {
         int max = vertices.size();
         for (int i = 0; i < max; i++) {
             vertices.set(i, new ComplexNum(
-                    vertices.get(i).getReal()+vector.getReal(),
-                    vertices.get(i).getImg()+vector.getImg()
+                    vertices.get(i).getReal() + vector.getReal(),
+                    vertices.get(i).getImg() + vector.getImg()
             ));
         }
-
         return vertices;
     }
 
 
     /**
      * Obraca zbiór punktów względem zadanego punktu o kąt podany w radianach.
+     *
      * @param vertices
      * @param angle
      * @return
      */
 
-    public ArrayList<ComplexNum> rotateByRadians(ArrayList<ComplexNum> vertices, ComplexNum pivot, double angle){
+    public ArrayList<ComplexNum> rotateByRadians(ArrayList<ComplexNum> vertices, ComplexNum pivot, double angle) {
+        double pivotReal = pivot.getReal();
+        double pivotImg = pivot.getImg();
+
         int max = vertices.size();
+
         for (int i = 0; i < max; i++) {
-            //TODO
+            double pointReal = vertices.get(i).getReal();
+            double pointImg = vertices.get(i).getImg();
 
+            vertices.set(i, new ComplexNum(
+                    pivotReal + (pointReal - pivotReal) * Math.cos(angle) - (pointImg - pivotImg) * Math.sin(angle),
+                    pivotImg + (pointReal - pivotReal) * Math.sin(angle) + (pointImg - pivotImg) * Math.cos(angle)));
         }
-
         return vertices;
     }
 
+
+    public ArrayList<ComplexNum> scale(ArrayList<ComplexNum> vertices, ComplexNum pivot, double scale) {
+        double pivotReal = pivot.getReal();
+        double pivotImg = pivot.getImg();
+
+        int max = vertices.size();
+
+        for (int i = 0; i < max; i++) {
+            double pointReal = vertices.get(i).getReal();
+            double pointImg = vertices.get(i).getImg();
+
+            vertices.set(i, new ComplexNum(
+                    (scale * (pointReal - pivotReal)) + pivotReal,
+                    (scale * (pointImg - pivotImg)) + pivotImg));
+        }
+        return vertices;
+    }
 
 
 }

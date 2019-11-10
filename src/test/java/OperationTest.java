@@ -18,7 +18,6 @@ public class OperationTest {
         vertices.add(new ComplexNum(10, 15));
 
         assertEquals(75, op.getArea(vertices), 0.00001);
-
     }
 
     @Test
@@ -31,7 +30,6 @@ public class OperationTest {
         vertices.add(new ComplexNum(0, 10));
 
         assertEquals(100, op.getArea(vertices), 0.00001);
-
     }
 
 
@@ -48,9 +46,7 @@ public class OperationTest {
         vertices.add(new ComplexNum(0, 15));
         vertices.add(new ComplexNum(0, 10));
 
-
         assertEquals(112.5, op.getArea(vertices), 0.00001);
-
     }
 
 
@@ -60,7 +56,6 @@ public class OperationTest {
         ComplexNum end = new ComplexNum(8, 20);
         assertEquals(18.0278, op.getDistanceBetween(origin, end), 0.001);
     }
-
 
 
     @Test
@@ -79,7 +74,7 @@ public class OperationTest {
         assertEquals(52.36, op.getCircuit(vertices), 0.001);
     }
 
-@Test
+    @Test
     public void moveByVectorTest() {
         ArrayList<ComplexNum> verticesOriginal = new ArrayList<>();
 
@@ -103,14 +98,53 @@ public class OperationTest {
         verticesMoved.add(new ComplexNum(20, 8));
         verticesMoved.add(new ComplexNum(20, 3));
 
-
-
-
-
-
-        assertEquals(verticesMoved, op.moveByVector(verticesOriginal,new ComplexNum(20,-7)));
-
+        assertEquals(verticesMoved, op.moveByVector(verticesOriginal, new ComplexNum(20, -7)));
     }
 
+    @Test
+    public void rotateByRadiansTest() {
+        ArrayList<ComplexNum> verticesOriginal = new ArrayList<>();
+        ArrayList<ComplexNum> verticesRotated = new ArrayList<>();
+
+        verticesOriginal.add(new ComplexNum(5, 0));
+        verticesOriginal.add(new ComplexNum(10, 0));
+        verticesOriginal.add(new ComplexNum(10, 15));
+        verticesOriginal.add(new ComplexNum(7.5, 15));
+
+        verticesRotated.add(new ComplexNum(8.0289, 15.4233));
+        verticesRotated.add(new ComplexNum(5.161, 19.519));
+        verticesRotated.add(new ComplexNum(-7.1263, 10.9154));
+        verticesRotated.add(new ComplexNum(-5.6924, 8.8675));
+
+        ComplexNum pivot = new ComplexNum(2.5, 8.5);
+
+        double angle = 125 * Math.PI / 180;
+
+        assertEquals(verticesRotated, op.rotateByRadians(verticesOriginal, pivot, angle));
+    }
+
+
+    @Test
+    public void scaleTest() {
+        ArrayList<ComplexNum> verticesOriginal = new ArrayList<>();
+        ArrayList<ComplexNum> verticesRotated = new ArrayList<>();
+
+        verticesOriginal.add(new ComplexNum(5, 0));
+        verticesOriginal.add(new ComplexNum(10, 0));
+        verticesOriginal.add(new ComplexNum(10, 15));
+        verticesOriginal.add(new ComplexNum(7.5, 15));
+
+
+        verticesRotated.add(new ComplexNum(6.25, -4.25));
+        verticesRotated.add(new ComplexNum(13.75, -4.25));
+        verticesRotated.add(new ComplexNum(13.75, 18.25));
+        verticesRotated.add(new ComplexNum(10, 18.25));
+
+        ComplexNum pivot = new ComplexNum(2.5, 8.5);
+
+        double scale = 1.5;
+
+        assertEquals(verticesRotated, op.scale(verticesOriginal, pivot, scale));
+    }
 
 }
