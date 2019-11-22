@@ -63,14 +63,16 @@ public class Operation {
      * @return
      */
     public ArrayList<ComplexNum> moveByVector(ArrayList<ComplexNum> vertices, ComplexNum vector) {
-        int max = vertices.size();
+        ArrayList<ComplexNum> movedVertices = new ArrayList<>(vertices);
+
+        int max = movedVertices.size();
         for (int i = 0; i < max; i++) {
-            vertices.set(i, new ComplexNum(
-                    vertices.get(i).getReal() + vector.getReal(),
-                    vertices.get(i).getImg() + vector.getImg()
+            movedVertices.set(i, new ComplexNum(
+                    movedVertices.get(i).getReal() + vector.getReal(),
+                    movedVertices.get(i).getImg() + vector.getImg()
             ));
         }
-        return vertices;
+        return movedVertices;
     }
 
 
@@ -83,38 +85,47 @@ public class Operation {
      */
 
     public ArrayList<ComplexNum> rotateByRadians(ArrayList<ComplexNum> vertices, ComplexNum pivot, double angle) {
+        ArrayList<ComplexNum> rotatedVertices = new ArrayList<>(vertices);
         double pivotReal = pivot.getReal();
         double pivotImg = pivot.getImg();
 
-        int max = vertices.size();
+        int max = rotatedVertices.size();
 
         for (int i = 0; i < max; i++) {
-            double pointReal = vertices.get(i).getReal();
-            double pointImg = vertices.get(i).getImg();
+            double pointReal = rotatedVertices.get(i).getReal();
+            double pointImg = rotatedVertices.get(i).getImg();
 
-            vertices.set(i, new ComplexNum(
+            rotatedVertices.set(i, new ComplexNum(
                     pivotReal + (pointReal - pivotReal) * Math.cos(angle) - (pointImg - pivotImg) * Math.sin(angle),
                     pivotImg + (pointReal - pivotReal) * Math.sin(angle) + (pointImg - pivotImg) * Math.cos(angle)));
         }
-        return vertices;
+        return rotatedVertices;
     }
 
 
     public ArrayList<ComplexNum> scale(ArrayList<ComplexNum> vertices, ComplexNum pivot, double scale) {
+        ArrayList<ComplexNum> scaledVertices = new ArrayList<>(vertices);
         double pivotReal = pivot.getReal();
         double pivotImg = pivot.getImg();
 
-        int max = vertices.size();
+        int max = scaledVertices.size();
 
         for (int i = 0; i < max; i++) {
-            double pointReal = vertices.get(i).getReal();
-            double pointImg = vertices.get(i).getImg();
+            double pointReal = scaledVertices.get(i).getReal();
+            double pointImg = scaledVertices.get(i).getImg();
 
-            vertices.set(i, new ComplexNum(
+            scaledVertices.set(i, new ComplexNum(
                     (scale * (pointReal - pivotReal)) + pivotReal,
                     (scale * (pointImg - pivotImg)) + pivotImg));
         }
-        return vertices;
+        return scaledVertices;
+    }
+
+
+    public boolean detectIntersections(ArrayList<ComplexNum> vertices){
+        //TODO or NOT TODO
+
+        return true;
     }
 
 
