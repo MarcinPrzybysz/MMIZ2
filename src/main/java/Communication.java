@@ -9,8 +9,14 @@ public class Communication {
     ArrayList<ComplexNum> vertices = new ArrayList();
     ComplexNum pivot = new ComplexNum(0, 0);
 
+    Validation validation = new Validation();
+
+    Plot plot = new Plot();
+
     public Communication() {
 
+
+        ///////////////////////////
 
         System.out.println("Program wykonuje podstawowe operacje na wielobokach przy pomocy liczb zespolonych.\n");
 
@@ -55,6 +61,8 @@ public class Communication {
                 case "n":
                 case "N":
                     vertices.clear();
+                    System.out.println("wyczyszczono?");
+                    printVertices(vertices,"ORYGINALNE");
                     initialPolygonInput();
                     break;
                 default:
@@ -79,14 +87,16 @@ public class Communication {
 
         System.out.println("Wybierz operację która ma zostać wykonana\n" +
                 "\"N\" Wpisz nowy poligon \n" +
-                "\"H\" wyświetli spis funkcji).\n");
+                "\"H\" wyświetli spis funkcji).\n" +
+                "\"Z\" Zakończ program");
 
     }
 
-    private void printVertices(ArrayList<ComplexNum> vertices) {
+    private void printVertices(ArrayList<ComplexNum> vertices, String title) {
         for (ComplexNum vertex : vertices) {
             System.out.println("[" + vertex.getReal() + " , " + vertex.getImg() + "]");
         }
+        plot.plot(vertices, title);
         System.out.println();
     }
 
@@ -104,20 +114,30 @@ public class Communication {
     private void moveByVector() {
         System.out.println("PRZESUNIĘCIE WIELOBOKU O WEKTOR");
         System.out.println("Podaj o jaki wektor (z początkiem w punkcie 0,0) chcesz dokonac przesunięcia");
+
         ComplexNum vector = representation.addNewComplex();
 
-        printVertices(operation.moveByVector(vertices, vector));
+        printVertices(operation.moveByVector(vertices, vector),"Przesunięte");
+
+        ArrayList<ComplexNum> vertices2 = new ArrayList<>();
+
+        vertices2.add(new ComplexNum(10, 10));
+        vertices2.add(new ComplexNum(20, 10));
+        vertices2.add(new ComplexNum(20, 20));
+        vertices2.add(new ComplexNum(10, 15));
+
+
     }
 
     private void rotateBy() {
-        System.out.println("OBRÓCENIE WIELOBOKU O KĄT:");
+        System.out.println("OBRÓCENIE WIELOBOKU O KĄT [RADIANY]:");
         System.out.println("Podaj punkt obrotu");
         pivot = representation.addNewComplex();
 
         System.out.print("Podaj kąt obrotu (w radianach): ");
         double angle = Double.valueOf(scan.nextLine());
 
-        printVertices(operation.rotateByRadians(vertices, pivot, angle));
+        printVertices(operation.rotateByRadians(vertices, pivot, angle),"Obrócone");
     }
 
     private void scaleBy() {
@@ -127,30 +147,39 @@ public class Communication {
 
         System.out.print("Podaj skale:");
         double scale = Double.valueOf(scan.nextLine());
-        printVertices(operation.scale(vertices, pivot, scale));
+        printVertices(operation.scale(vertices, pivot, scale),"Przeskalowane");
     }
 
     private void initialPolygonInput() {
+        boolean incorrectGeometry = true;
+
         System.out.println("Podaj kolejne wierzchołki wieloboku.\n");
 
-
-        System.out.println("Pierwszy wierzchołek");
-        vertices.add(representation.addNewComplex());
-        System.out.println("Drugi wierzchołek");
-        vertices.add(representation.addNewComplex());
-        System.out.println("Trzeci wierzchołek");
-
-        boolean addNext = true;
-
-        while (addNext) {
+        while (incorrectGeometry) {
+            System.out.println("Pierwszy wierzchołek");
             vertices.add(representation.addNewComplex());
-            System.out.println("Naciśnij ENTER żeby dodać nowy wierzchołek, lub dowolny przycisk żeby zakończyć");
-            String input = scan.nextLine();
-            if (!input.equals("")) {
-                addNext = !addNext;
+            System.out.println("Drugi wierzchołek");
+            vertices.add(representation.addNewComplex());
+            System.out.println("Trzeci wierzchołek");
+
+            boolean addNext = true;
+
+            while (addNext) {
+                vertices.add(representation.addNewComplex());
+                System.out.println("Naciśnij ENTER żeby dodać nowy wierzchołek, lub dowolny przycisk żeby zakończyć");
+                String input = scan.nextLine();
+                if (!input.equals("")) {
+                    addNext = !addNext;
+                }
+            }
+            if (validation.correctGeometry(vertices)) {
+                incorrectGeometry = false;
+            } else {
+                System.out.println("NIEPOPRAWNA GEOMETRIA \nUpewnij się, że krawędzie się nie przecinają i się nie powielają");
+                vertices.clear();
             }
         }
-
+        plot.plot(vertices, "Oryginalny");
     }
 
 

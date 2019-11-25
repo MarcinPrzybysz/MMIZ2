@@ -3,26 +3,48 @@ import java.util.ArrayList;
 public class Validation {
 
     boolean correctGeometry(ArrayList<ComplexNum> vertices) {
-        //todo: sprawdzić czy jest przecięcie
+        //return !(intersectingSides(vertices) && duplicatedVertices(vertices));
+        if(duplicatedVertices(vertices)){
+            System.out.println("powtórzone punkty");
+            return false;
+        }else if(intersectingSides(vertices)){
+            System.out.println("przecinające sie boki");
+            return false;
+        }else{
+
+            return true;
+        }
+
+    }
+
+    boolean intersectingSides(ArrayList<ComplexNum> vertices) {
         //todo: sprawdzić czy nie powtarzają się punkty
-        boolean intersects=false;
+        boolean intersects = false;
 
         int max = vertices.size() - 1;
 
-        //prawdopodobnie wystarczy sprawdzić tylko do połowy figury bo późnie się powtarza
         for (int i = 0; i < max; i++) {
-            for(int j = i+1; j < max; j++) {
-                intersects=checkIfIntersects(vertices.get(i), vertices.get(i + 1), vertices.get(j), vertices.get(j + 1));
-                System.out.println(intersects);
-                if(intersects){
-                    System.out.println("przecinają się punkty: "+ vertices.get(i).toString()+" -  "+ vertices.get(i+1).toString()+"\n" + vertices.get(j).toString()+" - "+ vertices.get(j+1).toString() );
-                    return !intersects;
+            for (int j = i + 1; j < max; j++) {
+                intersects = checkIfIntersects(vertices.get(i), vertices.get(i + 1), vertices.get(j), vertices.get(j + 1));
+                if (intersects) {
+                    return intersects;
                 }
             }
-
         }
-        System.out.println(intersects);
-        return !intersects;
+        //System.out.println(intersects);
+        return intersects;
+    }
+
+    boolean duplicatedVertices(ArrayList<ComplexNum> vertices) {
+        int max = vertices.size() - 1;
+        for (int i = 0; i < max; i++) {
+            for (int j = i + 1; j < max; j++) {
+                if (vertices.get(i).equals(vertices.get(j))) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
@@ -33,19 +55,7 @@ public class Validation {
         double vectorP3 = vectorProduct(pointA1, pointA2, pointB1);
         double vectorP4 = vectorProduct(pointA1, pointA2, pointB2);
 
-        if ((((vectorP1 > 0 && vectorP2 < 0) || (vectorP1 < 0 && vectorP2 > 0))) && (((vectorP3 > 0 && vectorP4 < 0) || (vectorP3 < 0 && vectorP4 > 0)))) {
-            return true;
-       // }else if(vectorP1==0){
-       //     return true;
-       // }else if(vectorP2==0) {
-       //     return true;
-       // }else if(vectorP3==0) {
-       //     return true;
-       // }else if(vectorP4==0) {
-       //     return true;
-        }else{
-            return false;
-        }
+        return (((vectorP1 > 0 && vectorP2 < 0) || (vectorP1 < 0 && vectorP2 > 0))) && (((vectorP3 > 0 && vectorP4 < 0) || (vectorP3 < 0 && vectorP4 > 0)));
 
 
     }
