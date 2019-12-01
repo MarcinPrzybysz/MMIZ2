@@ -16,8 +16,6 @@ public class Communication {
     public Communication() {
 
 
-        ///////////////////////////
-
         System.out.println("Program wykonuje podstawowe operacje na wielobokach przy pomocy liczb zespolonych.\n");
 
         initialPolygonInput();
@@ -117,7 +115,9 @@ public class Communication {
 
         ComplexNum vector = representation.addNewComplex();
 
-        printVertices(operation.moveByVector(vertices, vector), "Przesunięte");
+        vertices=operation.moveByVector(vertices, vector);
+        printVertices(vertices, "Przesunięte");
+
 
         ArrayList<ComplexNum> vertices2 = new ArrayList<>();
 
@@ -125,8 +125,6 @@ public class Communication {
         vertices2.add(new ComplexNum(20, 10));
         vertices2.add(new ComplexNum(20, 20));
         vertices2.add(new ComplexNum(10, 15));
-
-
     }
 
     private void rotateBy() {
@@ -137,7 +135,8 @@ public class Communication {
         System.out.print("Podaj kąt obrotu (w radianach): ");
         double angle = Double.valueOf(scan.nextLine());
 
-        printVertices(operation.rotateByRadians(vertices, pivot, angle), "Obrócone");
+        vertices=operation.rotateByRadians(vertices,pivot,angle);
+        printVertices(vertices, "Obrócone");
     }
 
     private void scaleBy() {
@@ -147,7 +146,8 @@ public class Communication {
 
         System.out.print("Podaj skale:");
         double scale = Double.valueOf(scan.nextLine());
-        printVertices(operation.scale(vertices, pivot, scale), "Przeskalowane");
+        vertices=operation.scale(vertices, pivot, scale);
+        printVertices(vertices, "Przeskalowane");
     }
 
     private void initialPolygonInput() {
